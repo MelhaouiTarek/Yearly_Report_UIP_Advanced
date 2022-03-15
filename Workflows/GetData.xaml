@@ -72,7 +72,6 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence DisplayName="Workflow" sap:VirtualizedContainerService.HintSize="376,660" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -84,7 +83,7 @@
     <ui:LogMessage DisplayName="Log Getting Data" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Extracting Data from all pages&quot;]" />
     <ui:ExtractData DelayBetweenPagesMS="{x:Null}" ContinueOnError="True" DataTable="[out_dt_Extract]" DisplayName="Extract Structured Data 'TABLE'" ExtractMetadata="&lt;extract-table get_columns_name='1' get_empty_columns='1' columns_name_source='Longest'&gt;&lt;column name='Actions' attr='text' /&gt;&lt;column name='WIID' attr='text' /&gt;&lt;column name='Description' attr='text' /&gt;&lt;column name='Type' attr='text' /&gt;&lt;column name='Status' attr='text' /&gt;&lt;column name='Date' attr='text' /&gt;&lt;/extract-table&gt;" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="ExtractData_2" MaxNumberOfResults="0" NextLinkSelector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;&#xA;&lt;webctrl aaname='&amp;gt;' tag='A' /&gt;" SimulateClick="True">
       <ui:ExtractData.Target>
-        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="42fee11a-fcee-46df-8d27-b875eb3ee47e" InformativeScreenshot="9086d9c76d05d83e68108852b2222247" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;&lt;webctrl tag='TABLE' /&gt;" TimeoutMS="10000" WaitForReady="COMPLETE" />
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="42fee11a-fcee-46df-8d27-b875eb3ee47e" InformativeScreenshot="9086d9c76d05d83e68108852b2222247" Selector="&lt;html app='chrome.exe' title='ACME System 1 - Work Items' /&gt;&lt;webctrl tag='TABLE' /&gt;" TimeoutMS="5000" WaitForReady="COMPLETE" />
       </ui:ExtractData.Target>
     </ui:ExtractData>
     <ui:FilterDataTable DataTable="[out_dt_Extract]" DisplayName="Retaining WI4 Type" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="334,160" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[out_dt_Extract]" SelectColumnsMode="Keep">

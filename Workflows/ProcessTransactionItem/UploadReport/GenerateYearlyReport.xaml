@@ -1,14 +1,16 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="GenerateYearlyReport" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_TaxID" Type="InArgument(x:String)" />
+    <x:Property Name="out_FilePath" Type="OutArgument(x:String)" />
+    <x:Property Name="in_DownloadPath" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1212,1556</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1212,1721</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GenerateYearlyReport_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="31">
+    <scg:List x:TypeArguments="x:String" Capacity="62">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -40,6 +42,8 @@
       <x:String>UiPath.Shared.Activities.Business</x:String>
       <x:String>UiPath.Excel</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.CSV</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -74,28 +78,27 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="GenerateYearlyReport" sap:VirtualizedContainerService.HintSize="787,1491" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="GenerateYearlyReport" sap:VirtualizedContainerService.HintSize="787,1656" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dt_YearlyReport" />
-      <Variable x:TypeArguments="x:String" Name="DownloadPath" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="745,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Generating Yearly report&quot;]" />
-    <ui:RepeatNumberOfTimesX DisplayName="Repeat Number of Times" sap:VirtualizedContainerService.HintSize="745,1113" NumberOfTimes="12" StartAt="1">
+    <ui:LogMessage DisplayName="Log Message Start of Generate Yearly Sequence" sap:VirtualizedContainerService.HintSize="745,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Generating Yearly report&quot;]" />
+    <ui:RepeatNumberOfTimesX DisplayName="Loop for Each month of the year" sap:VirtualizedContainerService.HintSize="745,1178" sap2010:WorkflowViewState.IdRef="RepeatNumberOfTimesX_1" NumberOfTimes="12" StartAt="1">
       <ui:RepeatNumberOfTimesX.Body>
         <ActivityAction x:TypeArguments="x:Int32">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:Int32" Name="CurrentMonth" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Get Month Report " sap:VirtualizedContainerService.HintSize="711,958">
+          <Sequence DisplayName="Get Month Report " sap:VirtualizedContainerService.HintSize="711,1023" sap2010:WorkflowViewState.IdRef="Sequence_7">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:Boolean" Name="FileExists" />
             </Sequence.Variables>
@@ -104,28 +107,23 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:FileExistsX DisplayName="Checking if Montly Report Exists" Exists="[FileExists]" sap:VirtualizedContainerService.HintSize="669,132" Path="[DownloadPath+&quot;/Report-&quot;+in_TaxID+&quot;-&quot;+CurrentMonth.ToString]" />
-            <If Condition="[FileExists]" sap:VirtualizedContainerService.HintSize="669,694">
+            <ui:FileExistsX DisplayName="Checking if Montly Report Exists" Exists="[FileExists]" sap:VirtualizedContainerService.HintSize="669,132" sap2010:WorkflowViewState.IdRef="FileExistsX_2" Path="[in_DownloadPath+&quot;Report-&quot;+in_TaxID+&quot;-&quot;+CurrentMonth.ToString+&quot;.csv&quot;]" />
+            <If Condition="[FileExists]" DisplayName="File Exists Validation" sap:VirtualizedContainerService.HintSize="669,759" sap2010:WorkflowViewState.IdRef="If_4">
               <If.Then>
-                <Sequence DisplayName="FileExists" sap:VirtualizedContainerService.HintSize="633,508">
+                <Sequence DisplayName="FileExists" sap:VirtualizedContainerService.HintSize="633,573" sap2010:WorkflowViewState.IdRef="Sequence_5">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="sd:DataTable" Name="dt_Temp" />
+                    <Variable x:TypeArguments="x:String" Name="test" />
                   </Sequence.Variables>
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:ReadRange AddHeaders="True" DataTable="[dt_Temp]" DisplayName="Reading monthly datatable" sap:VirtualizedContainerService.HintSize="591,87" SheetName="Sheet1" WorkbookPath="[DownloadPath+&quot;/Report-&quot;+in_TaxID+&quot;-&quot;+CurrentMonth.ToString]">
-                    <ui:ReadRange.Range>
-                      <InArgument x:TypeArguments="x:String">
-                        <Literal x:TypeArguments="x:String" Value="" />
-                      </InArgument>
-                    </ui:ReadRange.Range>
-                  </ui:ReadRange>
-                  <If Condition="[dt_YearlyReport is Nothing]" sap:VirtualizedContainerService.HintSize="591,289">
+                  <ui:ReadCsvFile Encoding="{x:Null}" DataTable="[dt_Temp]" Delimitator="Comma" DisplayName="Getting Data from CSV" FilePath="[in_DownloadPath+&quot;Report-&quot;+in_TaxID+&quot;-&quot;+CurrentMonth.ToString+&quot;.csv&quot;]" sap:VirtualizedContainerService.HintSize="591,152" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1" />
+                  <If Condition="[dt_YearlyReport is Nothing]" DisplayName="Check If Yearly Data has to be initialized" sap:VirtualizedContainerService.HintSize="591,289" sap2010:WorkflowViewState.IdRef="If_3">
                     <If.Then>
-                      <Assign DisplayName="Initializing Yearly Report DataTable" sap:VirtualizedContainerService.HintSize="262,60">
+                      <Assign DisplayName="Initializing Yearly Report DataTable" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                         <Assign.To>
                           <OutArgument x:TypeArguments="sd:DataTable">[dt_YearlyReport]</OutArgument>
                         </Assign.To>
@@ -135,13 +133,13 @@
                       </Assign>
                     </If.Then>
                     <If.Else>
-                      <ui:MergeDataTable Destination="[dt_YearlyReport]" DisplayName="Appending Month Data to Yearly Report " sap:VirtualizedContainerService.HintSize="284,132" MissingSchemaAction="Add" Source="[dt_Temp]" />
+                      <ui:MergeDataTable Destination="[dt_YearlyReport]" DisplayName="Appending Month Data to Yearly Report " sap:VirtualizedContainerService.HintSize="284,132" sap2010:WorkflowViewState.IdRef="MergeDataTable_2" MissingSchemaAction="Add" Source="[dt_Temp]" />
                     </If.Else>
                   </If>
                 </Sequence>
               </If.Then>
               <If.Else>
-                <Sequence>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -154,6 +152,14 @@
         </ActivityAction>
       </ui:RepeatNumberOfTimesX.Body>
     </ui:RepeatNumberOfTimesX>
-    <ui:WriteRange AddHeaders="False" DataTable="[dt_YearlyReport]" DisplayName="Write Range" sap:VirtualizedContainerService.HintSize="745,115" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Sheet1" StartingCell="A1" WorkbookPath="[DownloadPath+&quot;/Yearly-Report-2021-&quot;+in_TaxID+&quot;.xlsx&quot;]" />
+    <ui:WriteRange AddHeaders="True" DataTable="[dt_YearlyReport]" DisplayName="Creating Yearly Report File from DT" sap:VirtualizedContainerService.HintSize="745,115" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Sheet1" StartingCell="A1" WorkbookPath="[in_DownloadPath+&quot;Yearly-Report-2021-&quot;+in_TaxID+&quot;.xlsx&quot;]" />
+    <Assign DisplayName="Assign Out File Path" sap:VirtualizedContainerService.HintSize="745,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[out_FilePath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_DownloadPath+"Yearly-Report-2021-"+in_TaxID+".xlsx"]</InArgument>
+      </Assign.Value>
+    </Assign>
   </Sequence>
 </Activity>

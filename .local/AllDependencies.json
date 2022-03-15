@@ -8068,8 +8068,8 @@
   },
   "project": {
     "restore": {
-      "projectUniqueName": "Hash_UIP_Adv",
-      "projectName": "Hash_UIP_Adv",
+      "projectUniqueName": "Yearly_Report_UIP_Advanced",
+      "projectName": "Yearly_Report_UIP_Advanced",
       "projectPath": "C:\\Users\\Xune\\Documents\\UiPath\\Yearly_Report_UIP_Advanced\\.local",
       "packagesPath": "C:\\Users\\Xune\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Xune\\Documents\\UiPath\\Yearly_Report_UIP_Advanced\\.local"
